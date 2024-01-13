@@ -1,0 +1,9 @@
+GET http://localhost:8080/currecencyExchanger_war_exploded/
+
+###
+
+GET http://localhost:8080/currecencyExchanger_war_exploded/currencies
+
+###
+
+GET http://localhost:8080/currecencyExchanger_war_exploded/currency/UAH

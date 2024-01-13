@@ -16,6 +16,7 @@ public class CurrencyRepository implements CrudRepository<Currency> {
     private static final String UPDATE_QUERY = "UPDATE Currencies SET code = ?, fullName = ?, sign = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM Currencies WHERE id = ?";
 
+
     @Override
     public Optional<Currency> findById(int id) {
         try (Connection connection = DataBaseUtil.getConnect().orElseThrow()) {

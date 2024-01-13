@@ -7,3 +7,16 @@ GET http://localhost:8080/currecencyExchanger_war_exploded/currencies
 ###
 
 GET http://localhost:8080/currecencyExchanger_war_exploded/currency/UAH
+
+###
+
+GET http://localhost:8080/currecencyExchanger_war_exploded/exchangeRates
+
+###
+
+GET http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDUAH
+
+###
+
+GET http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDKZT
+

@@ -32,7 +32,7 @@ public class CurrencyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getPathInfo() == null || request.getPathInfo().equals("/")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Указана не корректная валюта. Пример: .../currency/USD");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Input incorrect currency 400. Example: .../currency/USD");
             return;
         }
 
@@ -41,7 +41,7 @@ public class CurrencyServlet extends HttpServlet {
         Optional<Currency> currency = currencyRepository.findByCode(currencyCode);
 
         if (!currency.isPresent()) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Валюта не найдена. Пример: .../currency/USD");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency does not found 404. Example: .../currency/USD");
             return;
         }
 

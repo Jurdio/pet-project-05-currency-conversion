@@ -1,10 +1,10 @@
 package edu.exchanger.currencyexchanger.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.zaxxer.hikari.HikariDataSource;
 import edu.exchanger.currencyexchanger.models.Currency;
+import edu.exchanger.currencyexchanger.models.ExchangeRate;
 import edu.exchanger.currencyexchanger.repositories.CurrencyRepository;
+import edu.exchanger.currencyexchanger.repositories.ExchangeRatesRepository;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,19 +14,20 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@WebServlet(value = "/currencies")
-public class CurrenciesServlet extends HttpServlet {
-    private CurrencyRepository currencyRepository;
+@WebServlet("/exchangeRates")
+public class ExchangeRatesServlet extends HttpServlet {
+    private ExchangeRatesRepository exchangeRatesRepository;
+
     private Logger logger;
 
     @Override
     public void init() {
-        currencyRepository = new CurrencyRepository();
-
-        logger = LoggerFactory.getLogger(CurrenciesServlet.class);
-
+        exchangeRatesRepository = new ExchangeRatesRepository();
+        logger = LoggerFactory.getLogger(ExchangeRatesServlet.class);
     }
 
     @Override
@@ -35,14 +36,13 @@ public class CurrenciesServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         try {
-            List<Currency> currencies = currencyRepository.findAll();
+            List<ExchangeRate> exchangeRates = exchangeRatesRepository.findAll();
 
-            // Логуємо кількість валют у списку
-            logger.info("Number of currencies: {}", currencies.size());
 
-            // Конвертуємо список в JSON і виводимо у відповідь
+            logger.info("Number of exchange rates: " + exchangeRates.size());
+
             ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(currencies);
+            String json = objectMapper.writeValueAsString(exchangeRates);
 
             resp.setStatus(HttpServletResponse.SC_OK);
             out.println(json);
@@ -51,7 +51,7 @@ public class CurrenciesServlet extends HttpServlet {
             logger.error("Error processing request", e);
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.println("Internal Server Error 500");
+            out.println("Internal Server Error");
         }
     }
 }

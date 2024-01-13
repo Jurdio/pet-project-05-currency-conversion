@@ -26,26 +26,33 @@ public class ExchangeRateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
-        if (req.getPathInfo() == null || req.getPathInfo().equals("/")) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Коды валют пары отсутствуют в адресе. Пример: .../exchangeRate/USDUAH");
+        try {
+            if (req.getPathInfo() == null || req.getPathInfo().equals("/")) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "No pair of currency codes in URL 400. Example: .../exchangeRate/USDUAH");
+            }
+
+            String currenciesCodes = req.getPathInfo().replaceFirst("/","").toUpperCase();
+
+            if (currenciesCodes.length() != 6){
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Input incorrect pair of currencies 400. Example: .../exchangeRate/USDUAH");
+            }
+
+            Optional<ExchangeRate> exchangeRate = exchangeRatesRepository.findByCodes(currenciesCodes.substring(0,3), currenciesCodes.substring(3,6));
+
+            if (!exchangeRate.isPresent()) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Exchange rate for pair of currencies not found 404");
+                return;
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(exchangeRate.get());
+
+            resp.setStatus(HttpServletResponse.SC_OK);
+            out.println(json);
+        } catch (Exception e) {
+
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.println("Internal Server Error 500");
         }
 
-        String currenciesCodes = req.getPathInfo().replaceFirst("/","").toUpperCase();
-
-        if (currenciesCodes.length() != 6){
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Указана не корректная пара валют. Пример: .../exchangeRate/USDUAH");
-        }
-
-        Optional<ExchangeRate> exchangeRate = exchangeRatesRepository.findByCodes(currenciesCodes.substring(0,3), currenciesCodes.substring(3,6));
-
-        if (!exchangeRate.isPresent()) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Обменный курс для пары не найден");
-            return;
-        }
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(exchangeRate.get());
-
-        resp.setStatus(HttpServletResponse.SC_OK);
-        out.println(json);
     }
 }

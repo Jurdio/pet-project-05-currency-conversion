@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 @WebServlet(value = "/currency/*")
@@ -31,26 +32,36 @@ public class CurrencyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getPathInfo() == null || request.getPathInfo().equals("/")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Input incorrect currency 400. Example: .../currency/USD");
-            return;
+        try {
+            if (request.getPathInfo() == null || request.getPathInfo().equals("/")) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Input incorrect currency 400. Example: .../currency/USD");
+                return;
+            }
+
+            String currencyCode = request.getPathInfo().replaceFirst("/", "").toUpperCase();
+
+            Optional<Currency> currency = currencyRepository.findByCode(currencyCode);
+
+            if (!currency.isPresent()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency does not found 404. Example: .../currency/USD");
+                return;
+            }
+
+            // Конвертуємо об'єкт Currency в JSON рядок
+            String jsonCurrency = convertCurrencyToJson(currency.get());
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            // Надсилаємо JSON як відповідь
+            response.setContentType("application/json");
+            response.getWriter().write(jsonCurrency);
+        } catch (Exception e) {
+            // Логуємо помилку
+            logger.error("Error processing request", e);
+
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Internal Server Error 500");
         }
 
-        String currencyCode = request.getPathInfo().replaceFirst("/", "").toUpperCase();
-
-        Optional<Currency> currency = currencyRepository.findByCode(currencyCode);
-
-        if (!currency.isPresent()) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency does not found 404. Example: .../currency/USD");
-            return;
-        }
-
-        // Конвертуємо об'єкт Currency в JSON рядок
-        String jsonCurrency = convertCurrencyToJson(currency.get());
-
-        // Надсилаємо JSON як відповідь
-        response.setContentType("application/json");
-        response.getWriter().write(jsonCurrency);
     }
 
     private String convertCurrencyToJson(Currency currency) {

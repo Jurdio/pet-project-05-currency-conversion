@@ -51,7 +51,7 @@ public class ExchangeRatesServlet extends HttpServlet {
             logger.error("Error processing request", e);
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.println("Internal Server Error");
+            out.println("Internal Server Error 500");
         }
     }
 }

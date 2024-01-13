@@ -46,11 +46,11 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
         try (Connection connection = DataBaseUtil.getConnect().orElseThrow();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
 
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 exchangeRate = createExchangeRateFromResultSet(resultSet);
             }
         } catch (SQLException e) {

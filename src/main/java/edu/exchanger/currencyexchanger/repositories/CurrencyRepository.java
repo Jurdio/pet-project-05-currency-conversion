@@ -15,6 +15,18 @@ public class CurrencyRepository implements CrudRepository<Currency> {
     private static final String INSERT_QUERY = "INSERT INTO Currencies (code, fullName, sign) VALUES (?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE Currencies SET code = ?, fullName = ?, sign = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM Currencies WHERE id = ?";
+    private Currency createCurrencyFromResultSet(ResultSet resultSet){
+        try {
+            return Currency.builder()
+                    .id(resultSet.getInt("id"))
+                    .code(resultSet.getString("code"))
+                    .fullName(resultSet.getString("fullName"))
+                    .sign(resultSet.getString("sign"))
+                    .build();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     @Override
@@ -23,14 +35,10 @@ public class CurrencyRepository implements CrudRepository<Currency> {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
                 preparedStatement.setInt(1, id);
 
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (resultSet.next()) {
-                        String code = resultSet.getString("code");
-                        String fullName = resultSet.getString("fullName");
-                        String sign = resultSet.getString("sign");
+                ResultSet resultSet = preparedStatement.executeQuery();
 
-                        return Optional.of(new Currency(id, code, fullName, sign));
-                    }
+                if (resultSet.next()){
+                    return Optional.ofNullable(createCurrencyFromResultSet(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -44,15 +52,10 @@ public class CurrencyRepository implements CrudRepository<Currency> {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_CODE_QUERY)) {
             preparedStatement.setString(1, name);
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    int id = resultSet.getInt("id");
-                    String code = resultSet.getString("code");
-                    String fullName = resultSet.getString("fullName");
-                    String sign = resultSet.getString("sign");
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                    return Optional.of(new Currency(id, code, fullName, sign));
-                }
+            if (resultSet.next()){
+                return Optional.ofNullable(createCurrencyFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,21 +66,16 @@ public class CurrencyRepository implements CrudRepository<Currency> {
     @Override
     public List<Currency> findAll() {
         List<Currency> currencies = new ArrayList<>();
-        try (Connection connection = DataBaseUtil.getConnect().orElseThrow()) {
-            try (Statement statement = connection.createStatement()) {
-                try (ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY)) {
-                    while (resultSet.next()) {
-                        int id = resultSet.getInt("id");
-                        String code = resultSet.getString("code");
-                        String fullName = resultSet.getString("fullName");
-                        String sign = resultSet.getString("sign");
+        try (Connection connection = DataBaseUtil.getConnect().orElseThrow();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY))    {
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                        currencies.add(new Currency(id, code, fullName, sign));
-                    }
-                }
+            while (resultSet.next()){
+                currencies.add(createCurrencyFromResultSet(resultSet));
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return currencies;
     }

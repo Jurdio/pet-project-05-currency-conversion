@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariDataSource;
 import edu.exchanger.currencyexchanger.models.Currency;
 import edu.exchanger.currencyexchanger.repositories.CurrencyRepository;
+import edu.exchanger.currencyexchanger.util.Util;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
+@MultipartConfig
 @WebServlet(value = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
     private CurrencyRepository currencyRepository;
@@ -53,5 +56,24 @@ public class CurrenciesServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.println("Internal Server Error 500");
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String code = Util.getStringFromPartName(req,"code");
+        String name = Util.getStringFromPartName(req, "name");
+        String sign = Util.getStringFromPartName(req, "sign");
+
+        if (Util.isNotValidCurrenciesArgs(code, name, sign)){
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect input. Example: code = 'USD', name = 'US Dollar', sign = '$')");
+        }
+
+        if (currencyRepository.findByCode(code).isPresent()) {
+            resp.sendError(HttpServletResponse.SC_CONFLICT, "Currency with this name already exist");
+        }
+
+        currencyRepository.save(Currency.builder().code(code).fullName(name).sign(sign).build());
+
+        doGet(req, resp);
     }
 }

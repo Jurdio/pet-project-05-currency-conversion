@@ -82,33 +82,18 @@ public class CurrencyRepository implements CrudRepository<Currency> {
 
     @Override
     public void save(Currency currency) {
-        try (Connection connection = DataBaseUtil.getConnect().orElseThrow()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-                preparedStatement.setString(1, currency.getCode());
-                preparedStatement.setString(2, currency.getFullName());
-                preparedStatement.setString(3, currency.getSign());
-                preparedStatement.executeUpdate();
+        try (Connection connection = DataBaseUtil.getConnect().orElseThrow();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)){
 
-                // Отримуємо останній вставлений ідентифікатор
-                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                    if (resultSet.next()) {
-                        int lastInsertId = resultSet.getInt(1);
-                        currency.setId(lastInsertId);
-                    }
-                } catch (SQLFeatureNotSupportedException e) {
-                    // В разі винятку, використовуйте інший метод для отримання last_insert_rowid()
-                    try (Statement statement = connection.createStatement()) {
-                        try (ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid()")) {
-                            if (resultSet.next()) {
-                                int lastInsertId = resultSet.getInt(1);
-                                currency.setId(lastInsertId);
-                            }
-                        }
-                    }
-                }
-            }
+
+            preparedStatement.setString(1, currency.getCode());
+            preparedStatement.setString(2,currency.getFullName());
+            preparedStatement.setString(3,currency.getSign());
+
+            preparedStatement.execute();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

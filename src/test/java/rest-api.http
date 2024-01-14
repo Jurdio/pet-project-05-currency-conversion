@@ -20,3 +20,13 @@ GET http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDUAH
 
 GET http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDKZT
 
+###
+
+POST http://localhost:8080/currec''encyExchanger_war_exploded/currencies
+Content-Type: multipart/form-data
+
+code=EUR&name=Euro&sign=€
+
+
+
+

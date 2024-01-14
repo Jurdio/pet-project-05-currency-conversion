@@ -18,7 +18,7 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
     private static final String SELECT_BY_CODES_QUERY = "SELECT * FROM ExchangeRates WHERE " + "BaseCurrencyId=? AND TargetCurrencyId=?";
 
     private static final String SELECT_ALL_QUERY = "SELECT * FROM ExchangeRates";
-    private static final String INSERT_QUERY = "INSERT INTO ExchangeRates (code, fullName, sign) VALUES (?, ?, ?)";
+    private static final String INSERT_QUERY = "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES (?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE ExchangeRates SET code = ?, fullName = ?, sign = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM ExchangeRates WHERE id = ?";
     private final CurrencyRepository currencyRepository;
@@ -100,7 +100,19 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRate> {
 
     @Override
     public void save(ExchangeRate entity) {
+        try (Connection connection = DataBaseUtil.getConnect().orElseThrow();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)){
 
+
+            preparedStatement.setInt(1, entity.getBaseCurrency().getId());
+            preparedStatement.setInt(2, entity.getTargetCurrency().getId());
+            preparedStatement.setBigDecimal(3, entity.getRate());
+
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

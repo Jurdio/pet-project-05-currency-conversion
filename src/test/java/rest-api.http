@@ -22,10 +22,21 @@ GET http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDKZT
 
 ###
 
-POST http://localhost:8080/currec''encyExchanger_war_exploded/currencies
-Content-Type: multipart/form-data
+POST http://localhost:8080/currecencyExchanger_war_exploded/exchangeRates
+Content-Type: application/x-www-form-urlencoded
 
-code=EUR&name=Euro&sign=€
+baseCurrency = USD &
+targetCurrency = EUR &
+rate = 0.96
+
+###
+
+POST http://localhost:8080/currecencyExchanger_war_exploded/currencies
+Content-Type: application/x-www-form-urlencoded
+
+name = Euro &
+code = EUR &
+sign = €
 
 
 

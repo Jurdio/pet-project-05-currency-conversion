@@ -6,13 +6,17 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Builder
 public class ExchangeRate {
     private int id;
+    @NonNull
     private Currency baseCurrency;
+    @NonNull
     private Currency targetCurrency;
+    @NonNull
     private BigDecimal rate;
 
 }

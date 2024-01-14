@@ -60,16 +60,17 @@ public class CurrenciesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String code = Util.getStringFromPartName(req,"code");
-        String name = Util.getStringFromPartName(req, "name");
-        String sign = Util.getStringFromPartName(req, "sign");
+        String code = req.getParameter("code");
+        String name = req.getParameter("name");
+        String sign = req.getParameter("sign");
 
-        if (Util.isNotValidCurrenciesArgs(code, name, sign)){
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect input. Example: code = 'USD', name = 'US Dollar', sign = '$')");
-        }
+//        if (Util.isNotValidCurrenciesArgs(code, name, sign)){
+//            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect input. Example: code = 'USD', name = 'US Dollar', sign = '$')");
+//        }
 
         if (currencyRepository.findByCode(code).isPresent()) {
             resp.sendError(HttpServletResponse.SC_CONFLICT, "Currency with this name already exist");
+            return;
         }
 
         currencyRepository.save(Currency.builder().code(code).fullName(name).sign(sign).build());

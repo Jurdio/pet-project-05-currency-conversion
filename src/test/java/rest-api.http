@@ -25,8 +25,8 @@ GET http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDKZT
 POST http://localhost:8080/currecencyExchanger_war_exploded/exchangeRates
 Content-Type: application/x-www-form-urlencoded
 
-baseCurrency = USD &
-targetCurrency = EUR &
+baseCurrencyCode = USD &
+targetCurrencyCode = EUR &
 rate = 0.96
 
 ###
@@ -34,9 +34,16 @@ rate = 0.96
 POST http://localhost:8080/currecencyExchanger_war_exploded/currencies
 Content-Type: application/x-www-form-urlencoded
 
-name = Euro &
-code = EUR &
-sign = €
+name = Zlotyi &
+code = PLN &
+sign = zł
+
+###
+
+PATCH http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDUAH
+Content-Type: application/x-www-form-urlencoded
+
+rate = 1.05
 
 
 

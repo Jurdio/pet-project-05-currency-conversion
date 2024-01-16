@@ -1,5 +1,7 @@
-package edu.exchanger.currencyexchanger.models;
+package edu.exchanger.currencyexchanger.dto;
 
+
+import edu.exchanger.currencyexchanger.domain.Currency;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -8,15 +10,10 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
-@Builder
-public class ExchangeRate {
-    private int id;
-    @NonNull
+public class ExchangeDTO {
     private Currency baseCurrency;
-    @NonNull
     private Currency targetCurrency;
-    @NonNull
     private BigDecimal rate;
-
+    private BigDecimal amount;
+    private BigDecimal convertedAmount;
 }

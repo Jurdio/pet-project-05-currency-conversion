@@ -1,6 +1,6 @@
 package edu.exchanger.currencyexchanger.repositories;
 
-import edu.exchanger.currencyexchanger.models.ExchangeRate;
+import edu.exchanger.currencyexchanger.domain.ExchangeRate;
 import edu.exchanger.currencyexchanger.util.DataBaseUtil;
 
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
 package edu.exchanger.currencyexchanger.repositories;
 
-import edu.exchanger.currencyexchanger.models.Currency;
+import edu.exchanger.currencyexchanger.domain.Currency;
 import edu.exchanger.currencyexchanger.util.DataBaseUtil;
 
 import java.sql.*;

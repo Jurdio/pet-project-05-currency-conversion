@@ -1,7 +1,7 @@
 package edu.exchanger.currencyexchanger.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.exchanger.currencyexchanger.models.ExchangeRate;
+import edu.exchanger.currencyexchanger.domain.ExchangeRate;
 import edu.exchanger.currencyexchanger.repositories.ExchangeRatesRepository;
 import edu.exchanger.currencyexchanger.util.Util;
 import jakarta.servlet.ServletException;
@@ -12,11 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @WebServlet(value = "/exchangeRate/*")
 public class ExchangeRateServlet extends HttpServlet {

@@ -2,12 +2,9 @@ package edu.exchanger.currencyexchanger.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.zaxxer.hikari.HikariDataSource;
-import edu.exchanger.currencyexchanger.models.Currency;
+import edu.exchanger.currencyexchanger.domain.Currency;
 import edu.exchanger.currencyexchanger.repositories.CurrencyRepository;
-import edu.exchanger.currencyexchanger.util.Util;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-@MultipartConfig
+
 @WebServlet(value = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
     private CurrencyRepository currencyRepository;
@@ -34,7 +31,6 @@ public class CurrenciesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
 
         try {

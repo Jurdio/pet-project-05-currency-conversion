@@ -26,8 +26,8 @@ POST http://localhost:8080/currecencyExchanger_war_exploded/exchangeRates
 Content-Type: application/x-www-form-urlencoded
 
 baseCurrencyCode = USD &
-targetCurrencyCode = EUR &
-rate = 0.96
+targetCurrencyCode = UAH &
+rate = 37.93
 
 ###
 
@@ -43,7 +43,7 @@ sign = zł
 PATCH http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDUAH
 Content-Type: application/x-www-form-urlencoded
 
-rate = 1.05
+rate = 37.93
 
 
 

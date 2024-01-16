@@ -1,8 +1,8 @@
 package edu.exchanger.currencyexchanger.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.exchanger.currencyexchanger.models.Currency;
-import edu.exchanger.currencyexchanger.models.ExchangeRate;
+import edu.exchanger.currencyexchanger.domain.Currency;
+import edu.exchanger.currencyexchanger.domain.ExchangeRate;
 import edu.exchanger.currencyexchanger.repositories.CurrencyRepository;
 import edu.exchanger.currencyexchanger.repositories.ExchangeRatesRepository;
 import jakarta.servlet.ServletException;
@@ -14,9 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +34,7 @@ public class ExchangeRatesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
-        PrintWriter out = resp.getWriter();
+
 
         try {
             List<ExchangeRate> exchangeRates = exchangeRatesRepository.findAll();
@@ -45,17 +42,16 @@ public class ExchangeRatesServlet extends HttpServlet {
 
             logger.info("Number of exchange rates: " + exchangeRates.size());
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(exchangeRates);
+            new ObjectMapper().writeValue(resp.getWriter(), exchangeRatesRepository.findAll());
 
             resp.setStatus(HttpServletResponse.SC_OK);
-            out.println(json);
+
         } catch (Exception e) {
             // Логуємо помилку
             logger.error("Error processing request", e);
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.println("Internal Server Error 500");
+//            out.println("Internal Server Error 500");
         }
     }
 

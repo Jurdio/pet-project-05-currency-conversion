@@ -47,7 +47,7 @@ rate = 37.05
 
 ###
 
-GET http://localhost:8080/currecencyExchanger_war_exploded/exchange?from=USD&to=UAH&amount=10
+GET http://localhost:8080/currecencyExchanger_war_exploded/exchange?from=UAH&to=USD&amount=10
 Content-Type: application/x-www-form-urlencoded
 
 from = USD &

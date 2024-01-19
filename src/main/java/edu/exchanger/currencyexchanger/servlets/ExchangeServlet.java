@@ -44,6 +44,7 @@ public class ExchangeServlet extends HttpServlet {
             return;
         }
 
+
         ExchangeService exchangeService = ExchangeService.builder()
                 .exchangeRate(findExchangeRate(from,to))
                 .amount(BigDecimal.valueOf(Double.parseDouble(amount)))

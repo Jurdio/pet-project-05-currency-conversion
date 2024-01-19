@@ -1,4 +1,4 @@
-package edu.exchanger.currencyexchanger.models;
+package edu.exchanger.currencyexchanger.domain;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;

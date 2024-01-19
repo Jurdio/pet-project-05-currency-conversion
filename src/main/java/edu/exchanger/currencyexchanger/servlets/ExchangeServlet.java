@@ -1,8 +1,9 @@
 package edu.exchanger.currencyexchanger.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.exchanger.currencyexchanger.ExchangeService;
-import edu.exchanger.currencyexchanger.models.Currency;
+import edu.exchanger.currencyexchanger.domain.ExchangeRate;
+import edu.exchanger.currencyexchanger.services.ExchangeService;
+import edu.exchanger.currencyexchanger.domain.Currency;
 import edu.exchanger.currencyexchanger.repositories.CurrencyRepository;
 import edu.exchanger.currencyexchanger.repositories.ExchangeRatesRepository;
 import edu.exchanger.currencyexchanger.util.Util;
@@ -44,7 +45,7 @@ public class ExchangeServlet extends HttpServlet {
         }
 
         ExchangeService exchangeService = ExchangeService.builder()
-                .exchangeRate(exchangeRatesRepository.findByCodes(from,to).get())
+                .exchangeRate(findExchangeRate(from,to))
                 .amount(BigDecimal.valueOf(Double.parseDouble(amount)))
                 .build();
 
@@ -57,4 +58,27 @@ public class ExchangeServlet extends HttpServlet {
 
         return (fromCurrency.isPresent() && toCurrency.isPresent());
     }
+    private ExchangeRate findExchangeRate(String from, String to){
+        Optional<ExchangeRate> exchangeRate = exchangeRatesRepository.findByCodes(from,to);
+
+        if (exchangeRate.isPresent()){
+            return exchangeRate.get();
+        }
+
+        exchangeRate = exchangeRatesRepository.findByCodes(to,from);
+
+        if (exchangeRate.isPresent()){
+            return exchangeRate.get();
+        }
+
+        BigDecimal rate = exchangeRatesRepository.findByCodes("USD", from).get().getRate()
+                .divide(exchangeRatesRepository.findByCodes("USD",to).get().getRate());
+
+        return ExchangeRate.builder()
+                .baseCurrency(currencyRepository.findByCode(from).get())
+                .targetCurrency(currencyRepository.findByCode(to).get())
+                .rate(rate)
+                .build();
+    }
+
 }

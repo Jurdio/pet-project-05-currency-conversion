@@ -1,8 +1,8 @@
 package edu.exchanger.currencyexchanger.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.exchanger.currencyexchanger.models.Currency;
-import edu.exchanger.currencyexchanger.models.ExchangeRate;
+import edu.exchanger.currencyexchanger.domain.Currency;
+import edu.exchanger.currencyexchanger.domain.ExchangeRate;
 import edu.exchanger.currencyexchanger.repositories.CurrencyRepository;
 import edu.exchanger.currencyexchanger.repositories.ExchangeRatesRepository;
 import jakarta.servlet.ServletException;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

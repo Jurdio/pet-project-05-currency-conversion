@@ -2,8 +2,7 @@ package edu.exchanger.currencyexchanger.servlets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zaxxer.hikari.HikariDataSource;
-import edu.exchanger.currencyexchanger.models.Currency;
+import edu.exchanger.currencyexchanger.domain.Currency;
 import edu.exchanger.currencyexchanger.repositories.CurrencyRepository;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -15,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Optional;
 
 @WebServlet(value = "/currency/*")

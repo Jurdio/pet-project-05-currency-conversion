@@ -2,10 +2,8 @@ package edu.exchanger.currencyexchanger.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.zaxxer.hikari.HikariDataSource;
-import edu.exchanger.currencyexchanger.models.Currency;
+import edu.exchanger.currencyexchanger.domain.Currency;
 import edu.exchanger.currencyexchanger.repositories.CurrencyRepository;
-import edu.exchanger.currencyexchanger.util.Util;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;

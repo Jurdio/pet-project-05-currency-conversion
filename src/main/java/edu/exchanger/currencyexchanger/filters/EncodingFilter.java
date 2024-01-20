@@ -2,7 +2,6 @@ package edu.exchanger.currencyexchanger.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -23,11 +22,6 @@ public class EncodingFilter implements Filter {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        filterChain.doFilter(request,response);
-    }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
+        filterChain.doFilter(request, response);
     }
 }

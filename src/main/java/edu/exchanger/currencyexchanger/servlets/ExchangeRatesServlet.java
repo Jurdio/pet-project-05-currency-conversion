@@ -35,7 +35,6 @@ public class ExchangeRatesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-
         try {
             List<ExchangeRate> exchangeRates = exchangeRatesRepository.findAll();
 

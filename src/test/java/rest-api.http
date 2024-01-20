@@ -1,4 +1,4 @@
-GET http://localhost:8080/currecencyExchanger_war_exploded/
+GET http://localhost:8080/currecencyExchanger_war_exploded/hello-servlet
 
 ###
 
@@ -26,8 +26,9 @@ POST http://localhost:8080/currecencyExchanger_war_exploded/exchangeRates
 Content-Type: application/x-www-form-urlencoded
 
 baseCurrencyCode = USD &
-targetCurrencyCode = UAH &
-rate = 37.93
+targetCurrencyCode = PLN &
+rate = 12.54
+>>>>>>> fix
 
 ###
 
@@ -43,7 +44,17 @@ sign = zł
 PATCH http://localhost:8080/currecencyExchanger_war_exploded/exchangeRate/USDUAH
 Content-Type: application/x-www-form-urlencoded
 
+
 rate = 37.93
+
+###
+
+GET http://localhost:8080/currecencyExchanger_war_exploded/exchange?from=UAH&to=USD&amount=10
+Content-Type: application/x-www-form-urlencoded
+
+from = USD &
+to = UAH &
+amount = 10
 
 
 

@@ -15,6 +15,8 @@
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
         <junit.version>5.9.2</junit.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <org.projectlombok.version>1.18.30</org.projectlombok.version>
     </properties>
 
     <dependencies>
@@ -39,7 +41,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>${org.projectlombok.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
@@ -66,12 +68,10 @@
             <version>1.7.32</version> <!-- Та ж версія, що й slf4j-api -->
             <scope>runtime</scope>
         </dependency>
-        <!-- Інші залежності ... -->
-        <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>4.0.3</version>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
         </dependency>
 
 
@@ -82,9 +82,32 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>11</source> <!-- depending on your project -->
+                    <target>11</target> <!-- depending on your project -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${org.projectlombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+                        <!-- other annotation processors -->
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>

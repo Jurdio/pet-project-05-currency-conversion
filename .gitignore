@@ -275,3 +275,5 @@ buildNumber.properties
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,intellij+iml,intellij+all,maven
+/out/
+/.idea/

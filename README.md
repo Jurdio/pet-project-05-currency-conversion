@@ -7,7 +7,7 @@
 To build and run the project, use Maven and Java. Make sure you have Maven and Java installed (Tomcat 10 is recommended for deployment on the server).
 
 ```bash
-git clone https://github.com/your-username/currency-exchange-api.git
+git clone https://github.com/Jurdio/pet-project-05-currency-conversion.git
 ```
 ## Exchange Rates
 ### `GET /exchangeRates`

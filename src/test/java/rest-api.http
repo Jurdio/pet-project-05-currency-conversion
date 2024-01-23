@@ -28,7 +28,7 @@ Content-Type: application/x-www-form-urlencoded
 baseCurrencyCode = USD &
 targetCurrencyCode = PLN &
 rate = 12.54
->>>>>>> fix
+
 
 ###
 

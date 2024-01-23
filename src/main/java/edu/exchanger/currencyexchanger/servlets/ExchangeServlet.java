@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mapstruct.factory.Mappers;
 
 import java.io.IOException;
 
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 @WebServlet(value = "/exchange")
 public class ExchangeServlet extends HttpServlet {
+    private final ExchangeMapper EXCHANGE_MAPPER = Mappers.getMapper(ExchangeMapper.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String from = req.getParameter("from");
@@ -39,7 +41,7 @@ public class ExchangeServlet extends HttpServlet {
             return;
         }
 
-        ExchangeDTO exchangeDTO = ExchangeMapper.INSTANCE.toExchangeDTO(exchangeService.getExchange());
+        ExchangeDTO exchangeDTO = EXCHANGE_MAPPER.toExchangeDTO(exchangeService.getExchange());
 
         new ObjectMapper().writeValue(resp.getWriter(), exchangeDTO);
     }

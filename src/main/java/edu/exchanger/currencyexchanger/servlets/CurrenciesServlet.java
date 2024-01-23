@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,15 +18,14 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(value = "/currencies")
+@Slf4j
 public class CurrenciesServlet extends HttpServlet {
     private CurrencyRepository currencyRepository;
-    private Logger logger;
 
     @Override
     public void init() {
         currencyRepository = new CurrencyRepository();
 
-        logger = LoggerFactory.getLogger(CurrenciesServlet.class);
 
     }
 
@@ -36,9 +36,6 @@ public class CurrenciesServlet extends HttpServlet {
         try {
             List<Currency> currencies = currencyRepository.findAll();
 
-            // Логуємо кількість валют у списку
-            logger.info("Number of currencies: {}", currencies.size());
-
             // Конвертуємо список в JSON і виводимо у відповідь
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(currencies);
@@ -46,8 +43,6 @@ public class CurrenciesServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_OK);
             out.println(json);
         } catch (Exception e) {
-            // Логуємо помилку
-            logger.error("Error processing request", e);
 
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.println("Internal Server Error 500");
@@ -59,10 +54,6 @@ public class CurrenciesServlet extends HttpServlet {
         String code = req.getParameter("code");
         String name = req.getParameter("name");
         String sign = req.getParameter("sign");
-
-//        if (Util.isNotValidCurrenciesArgs(code, name, sign)){
-//            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect input. Example: code = 'USD', name = 'US Dollar', sign = '$')");
-//        }
 
         if (currencyRepository.findByCode(code).isPresent()) {
             resp.sendError(HttpServletResponse.SC_CONFLICT, "Currency with this name already exist");

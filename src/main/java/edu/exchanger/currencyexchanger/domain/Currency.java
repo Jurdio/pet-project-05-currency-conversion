@@ -9,7 +9,6 @@ import lombok.*;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonPropertyOrder({"id", "fullName", "code", "sign"})
 public class Currency {
     private int id;
     @NonNull

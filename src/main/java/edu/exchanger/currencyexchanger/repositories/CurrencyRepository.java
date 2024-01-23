@@ -14,7 +14,6 @@ public class CurrencyRepository implements CrudRepository<Currency> {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM Currencies";
     private static final String INSERT_QUERY = "INSERT INTO Currencies (code, fullName, sign) VALUES (?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE Currencies SET code = ?, fullName = ?, sign = ? WHERE id = ?";
-    private static final String DELETE_QUERY = "DELETE FROM Currencies WHERE id = ?";
     private Currency createCurrencyFromResultSet(ResultSet resultSet){
         try {
             return Currency.builder()
@@ -27,7 +26,6 @@ public class CurrencyRepository implements CrudRepository<Currency> {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public Optional<Currency> findById(int id) {
@@ -115,13 +113,6 @@ public class CurrencyRepository implements CrudRepository<Currency> {
 
     @Override
     public void delete(int id) {
-        try (Connection connection = DataBaseUtil.getConnect().orElseThrow()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
-                preparedStatement.setInt(1, id);
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 }

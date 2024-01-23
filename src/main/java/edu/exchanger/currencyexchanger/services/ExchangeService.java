@@ -32,12 +32,13 @@ public class ExchangeService {
 
     public Exchange getExchange(){
         return Exchange.builder()
-                .exchangeRate(exchangeRate.get())
+                .exchangeRate(exchangeRate.orElseThrow())
                 .amount(amount)
-                .convertedAmount(getConvertedAmount()).build();
+                .convertedAmount(getConvertedAmount())
+                .build();
     }
     private BigDecimal getConvertedAmount(){
-        return exchangeRate.get().getRate().multiply(amount);
+        return exchangeRate.orElseThrow().getRate().multiply(amount);
     }
     private Optional<ExchangeRate> findExchangeRate(String from, String to){
         Optional<ExchangeRate> exchangeRate = exchangeRatesRepository.findByCodes(from,to);
